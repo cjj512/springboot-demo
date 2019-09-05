@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cjj.stuspringbootdemo.dao.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.cjj.stuspringbootdemo.domain.Role" >
+  <id column="id" property="id" jdbcType="INTEGER" />
+  <result column="role_name" property="role_name" jdbcType="VARCHAR" />
+    <result column="user_id" property="user_id" jdbcType="INTEGER" />
+</resultMap>
+  <sql id="Base_Column_List" >
+    id, role_name, user_id
+  </sql>
+
+  <delete id="deletRoleById" parameterType="java.lang.Integer" >
+    delete from role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.cjj.stuspringbootdemo.domain.Role" >
+    insert into role (id, role_name, user_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{role_name,jdbcType=VARCHAR},#{user_id,jdbcType=INTEGER}
+      )
+  </insert>
+
+  <select id="selectRoleById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from role
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+
+  <update id="updateRoleById" parameterType="com.cjj.stuspringbootdemo.domain.Role" >
+    update role
+    <set>
+      <if test="role_name != null" >
+        role_name = #{role_name,jdbcType=VARCHAR},
+      </if>
+      <if test="user_id != null" >
+        user_id = #{user_id,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+<!--
+  <update id="updateUserById" parameterType="com.cjj.stuspringbootdemo.domain.User" >
+    update user
+    <set>
+      name = #{name,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      SAL = #{sal,jdbcType=DOUBLE},
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>-->
+
+  <select id="getPermissionByRoleId" resultType="com.cjj.stuspringbootdemo.domain.Permission" parameterType="java.lang.Integer" >
+    select *
+    from permission
+    where role_id = #{id,jdbcType=INTEGER}
+  </select>
+</mapper>
